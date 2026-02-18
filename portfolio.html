@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prince Ostwal — Engineer · Entrepreneur</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0a0a;
+      --surface: #111111;
+      --border: #1e1e1e;
+      --text: #f0ede8;
+      --muted: #6b6760;
+      --accent: #e8d5a3;
+      --accent2: #c8a87a;
+      --red: #d4533a;
+      --font-display: 'Bebas Neue', sans-serif;
+      --font-serif: 'DM Serif Display', serif;
+      --font-body: 'DM Sans', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 15px;
+      line-height: 1.6;
+      cursor: none;
+      overflow-x: hidden;
+    }
+
+    /* CUSTOM CURSOR */
+    .cursor {
+      position: fixed;
+      width: 10px; height: 10px;
+      background: var(--accent);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: width 0.2s, height 0.2s, background 0.2s;
+    }
+    .cursor-ring {
+      position: fixed;
+      width: 36px; height: 36px;
+      border: 1px solid var(--accent);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: width 0.3s, height 0.3s, opacity 0.3s;
+      opacity: 0.5;
+    }
+    body:hover .cursor { width: 10px; height: 10px; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 48px;
+      background: rgba(10,10,10,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 22px;
+      letter-spacing: 3px;
+      color: var(--accent);
+    }
+    .nav-links {
+      display: flex; gap: 36px; list-style: none;
+    }
+    .nav-links a {
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      transition: color 0.25s;
+    }
+    .nav-links a:hover { color: var(--text); }
+
+    /* HERO */
+    #hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 120px 48px 60px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-bg-text {
+      position: absolute;
+      bottom: -40px; right: -20px;
+      font-family: var(--font-display);
+      font-size: clamp(120px, 20vw, 280px);
+      color: transparent;
+      -webkit-text-stroke: 1px #1a1a1a;
+      pointer-events: none;
+      line-height: 1;
+      user-select: none;
+    }
+    .hero-left { z-index: 1; }
+    .hero-tag {
+      display: inline-block;
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--accent2);
+      border: 1px solid var(--accent2);
+      padding: 5px 14px;
+      margin-bottom: 28px;
+    }
+    .hero-name {
+      font-family: var(--font-display);
+      font-size: clamp(72px, 10vw, 140px);
+      line-height: 0.88;
+      letter-spacing: 4px;
+      color: var(--text);
+    }
+    .hero-name span {
+      display: block;
+      color: var(--accent);
+    }
+    .hero-subtitle {
+      margin-top: 28px;
+      font-size: 15px;
+      color: var(--muted);
+      max-width: 420px;
+      line-height: 1.8;
+      font-weight: 300;
+    }
+    .hero-subtitle em {
+      color: var(--text);
+      font-style: italic;
+    }
+    .hero-cta {
+      display: flex; gap: 16px; margin-top: 44px; flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-block;
+      padding: 13px 32px;
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-decoration: none;
+      font-family: var(--font-body);
+      font-weight: 500;
+      transition: all 0.25s;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: var(--bg);
+    }
+    .btn-primary:hover { background: var(--accent2); }
+    .btn-ghost {
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+    .hero-right {
+      z-index: 1;
+      display: flex; flex-direction: column; align-items: flex-end; gap: 20px;
+    }
+    .hero-stats {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      width: 100%; max-width: 380px;
+    }
+    .stat-box {
+      background: var(--bg);
+      padding: 28px 24px;
+    }
+    .stat-num {
+      font-family: var(--font-display);
+      font-size: 48px;
+      letter-spacing: 2px;
+      color: var(--accent);
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 36px; left: 50%;
+      transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      color: var(--muted); font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+      animation: bob 2.5s ease-in-out infinite;
+    }
+    .scroll-line {
+      width: 1px; height: 48px;
+      background: linear-gradient(to bottom, var(--accent), transparent);
+    }
+    @keyframes bob { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(8px)} }
+
+    /* SECTIONS SHARED */
+    section { padding: 100px 48px; }
+    .section-label {
+      font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--accent2); margin-bottom: 16px;
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(48px, 7vw, 88px);
+      line-height: 0.9;
+      letter-spacing: 3px;
+      margin-bottom: 60px;
+    }
+    .divider {
+      width: 100%; height: 1px;
+      background: var(--border);
+      margin: 0;
+    }
+
+    /* ABOUT */
+    #about {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+    .about-text p {
+      font-size: 16px;
+      font-weight: 300;
+      color: var(--muted);
+      line-height: 1.9;
+      margin-bottom: 20px;
+    }
+    .about-text p strong { color: var(--text); font-weight: 500; }
+    .about-roles {
+      display: flex; flex-direction: column; gap: 12px; margin-top: 16px;
+    }
+    .role-row {
+      display: flex; align-items: center; gap: 16px;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+    }
+    .role-row .dot {
+      width: 6px; height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .role-row .role-title { color: var(--text); font-weight: 500; }
+    .role-row .role-org { color: var(--muted); margin-left: auto; font-size: 12px; letter-spacing: 0.5px; }
+
+    /* PROJECTS */
+    #projects { background: var(--surface); }
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+    .project-card {
+      background: var(--surface);
+      padding: 40px 32px;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s;
+    }
+    .project-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px; height: 0;
+      background: var(--accent);
+      transition: height 0.4s ease;
+    }
+    .project-card:hover { background: #161616; }
+    .project-card:hover::before { height: 100%; }
+    .project-num {
+      font-family: var(--font-display);
+      font-size: 52px;
+      color: var(--border);
+      line-height: 1;
+      margin-bottom: 24px;
+      letter-spacing: 2px;
+    }
+    .project-name {
+      font-family: var(--font-serif);
+      font-size: 22px;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+    .project-desc {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.8;
+      font-weight: 300;
+    }
+    .project-tags {
+      display: flex; flex-wrap: wrap; gap: 8px;
+      margin-top: 24px;
+    }
+    .tag {
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+
+    /* EXPERIENCE */
+    #experience {}
+    .exp-grid { display: flex; flex-direction: column; }
+    .exp-item {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 48px;
+      padding: 40px 0;
+      border-bottom: 1px solid var(--border);
+      align-items: start;
+    }
+    .exp-left {}
+    .exp-year {
+      font-family: var(--font-display);
+      font-size: 14px;
+      letter-spacing: 2px;
+      color: var(--muted);
+    }
+    .exp-company {
+      font-size: 13px;
+      color: var(--accent2);
+      margin-top: 4px;
+      letter-spacing: 0.5px;
+    }
+    .exp-right {}
+    .exp-title {
+      font-family: var(--font-serif);
+      font-size: 24px;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+    .exp-detail {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.8;
+      font-weight: 300;
+    }
+
+    /* SKILLS */
+    #skills { background: var(--surface); }
+    .skills-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+    .skill-group {
+      background: var(--surface);
+      padding: 40px 32px;
+    }
+    .skill-group-title {
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent2);
+      margin-bottom: 24px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .skill-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+      color: var(--text);
+    }
+    .skill-item:last-child { border-bottom: none; }
+    .skill-dot {
+      width: 4px; height: 4px;
+      background: var(--accent);
+      border-radius: 50%;
+    }
+
+    /* CERTIFICATIONS */
+    #certifications {}
+    .cert-list { display: flex; flex-direction: column; }
+    .cert-item {
+      display: flex; align-items: center;
+      padding: 24px 0;
+      border-bottom: 1px solid var(--border);
+      gap: 24px;
+      transition: padding-left 0.3s;
+    }
+    .cert-item:hover { padding-left: 16px; }
+    .cert-arrow {
+      font-size: 18px;
+      color: var(--muted);
+      transition: color 0.25s;
+      flex-shrink: 0;
+    }
+    .cert-item:hover .cert-arrow { color: var(--accent); }
+    .cert-name {
+      font-size: 16px;
+      color: var(--text);
+      font-family: var(--font-serif);
+      flex: 1;
+    }
+    .cert-org {
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      flex-shrink: 0;
+    }
+
+    /* CONTACT */
+    #contact { text-align: center; position: relative; overflow: hidden; }
+    .contact-bg {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: var(--font-display);
+      font-size: clamp(80px, 18vw, 200px);
+      color: transparent;
+      -webkit-text-stroke: 1px #131313;
+      pointer-events: none;
+      user-select: none;
+      white-space: nowrap;
+    }
+    .contact-inner { position: relative; z-index: 1; }
+    .contact-email {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 5vw, 56px);
+      letter-spacing: 3px;
+      color: var(--accent);
+      text-decoration: none;
+      display: inline-block;
+      margin: 24px 0 48px;
+      transition: color 0.25s;
+    }
+    .contact-email:hover { color: var(--text); }
+    .social-links {
+      display: flex; justify-content: center; gap: 32px;
+      flex-wrap: wrap; margin-top: 32px;
+    }
+    .social-link {
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.25s;
+      padding-bottom: 4px;
+      border-bottom: 1px solid transparent;
+    }
+    .social-link:hover {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+
+    /* FOOTER */
+    footer {
+      padding: 28px 48px;
+      border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .footer-name {
+      font-family: var(--font-display);
+      font-size: 14px;
+      letter-spacing: 3px;
+      color: var(--muted);
+    }
+    .footer-copy {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* REVEAL ANIMATIONS */
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      nav { padding: 16px 24px; }
+      .nav-links { display: none; }
+      #hero { grid-template-columns: 1fr; padding: 100px 24px 60px; }
+      .hero-right { align-items: flex-start; }
+      .hero-stats { max-width: 100%; }
+      #about { grid-template-columns: 1fr; gap: 48px; padding: 60px 24px; }
+      .projects-grid { grid-template-columns: 1fr; }
+      .skills-layout { grid-template-columns: 1fr; }
+      .exp-item { grid-template-columns: 1fr; gap: 12px; }
+      section { padding: 60px 24px; }
+      footer { padding: 24px; flex-direction: column; gap: 8px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- CURSOR -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">PO</div>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#certifications">Awards</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-bg-text">PRINCE</div>
+    <div class="hero-left">
+      <div class="hero-tag">Computer Engineering · Pune</div>
+      <h1 class="hero-name">
+        PRINCE<span>OSTWAL</span>
+      </h1>
+      <p class="hero-subtitle">
+        Third-year CE student at <em>I²IT Pune</em>. Building at the intersection of
+        <em>technology, entrepreneurship & finance</em>. Founder of Quasars &amp; Finofy.
+        Campus Ambassador — E-Cell IIT Bombay.
+      </p>
+      <div class="hero-cta">
+        <a href="mailto:ostwalprince2005@gmail.com" class="btn btn-primary">Get In Touch</a>
+        <a href="#projects" class="btn btn-ghost">View Work</a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-stats reveal">
+        <div class="stat-box">
+          <div class="stat-num">10+</div>
+          <div class="stat-label">Certificates</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">3+</div>
+          <div class="stat-label">Startups Built</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">4</div>
+          <div class="stat-label">IIT Events</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">2027</div>
+          <div class="stat-label">Expected Grad</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-scroll">
+      <div class="scroll-line"></div>
+      Scroll
+    </div>
+  </section>
+  <div class="divider"></div>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="about-left">
+      <div class="section-label reveal">Who I Am</div>
+      <h2 class="section-title reveal reveal-delay-1">ABOUT</h2>
+      <div class="about-text reveal reveal-delay-2">
+        <p>
+          I'm <strong>Prince Ostwal</strong> — a Computer Engineering student at the International Institute of Information Technology, Pune, with a deep drive for building things that matter.
+        </p>
+        <p>
+          My work spans <strong>AI-powered applications</strong>, <strong>financial technology</strong>, and <strong>entrepreneurship</strong>. I've competed at national-level startup challenges, built products from scratch, and led teams across innovation councils and student bodies.
+        </p>
+        <p>
+          Beyond code, I care about communication, strategy, and the business layer of technology — which is why I pursued a 3-month Launchpad program in Finance Management & Accounting alongside my degree.
+        </p>
+      </div>
+    </div>
+    <div class="about-right reveal reveal-delay-3">
+      <div class="section-label">Leadership Roles</div>
+      <div class="about-roles">
+        <div class="role-row">
+          <span class="dot"></span>
+          <span class="role-title">Finance & Auditing Head</span>
+          <span class="role-org">IIC · I²IT</span>
+        </div>
+        <div class="role-row">
+          <span class="dot"></span>
+          <span class="role-title">Core Member</span>
+          <span class="role-org">E-Cell · I²IT</span>
+        </div>
+        <div class="role-row">
+          <span class="dot"></span>
+          <span class="role-title">Marketing Head</span>
+          <span class="role-org">CSA · I²IT</span>
+        </div>
+        <div class="role-row">
+          <span class="dot"></span>
+          <span class="role-title">Campus Ambassador</span>
+          <span class="role-org">E-Cell · IIT Bombay</span>
+        </div>
+        <div class="role-row">
+          <span class="dot"></span>
+          <span class="role-title">Member</span>
+          <span class="role-org">Google Developer Student Community</span>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="divider"></div>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="section-label reveal">What I've Built</div>
+    <h2 class="section-title reveal reveal-delay-1">PROJECTS</h2>
+    <div class="projects-grid">
+      <div class="project-card reveal">
+        <div class="project-num">01</div>
+        <div class="project-name">Quasars</div>
+        <p class="project-desc">
+          AI-Integrated Productivity Desktop App built with Python & Tkinter. Features speech recognition, smart reminders, and an AI assistant named "Anu" for social anxiety, ADHD, and overthinking support.
+        </p>
+        <div class="project-tags">
+          <span class="tag">Python</span>
+          <span class="tag">Tkinter</span>
+          <span class="tag">Speech AI</span>
+          <span class="tag">Mental Health</span>
+        </div>
+      </div>
+      <div class="project-card reveal reveal-delay-1">
+        <div class="project-num">02</div>
+        <div class="project-name">Finofy</div>
+        <p class="project-desc">
+          API-based competitive exam platform integrated with test practice portal and study materials. Developed for Startup Mahakumbh Futurepreneurs Challenge at Bharat Mandapam, New Delhi.
+        </p>
+        <div class="project-tags">
+          <span class="tag">API Integration</span>
+          <span class="tag">EdTech</span>
+          <span class="tag">Startup</span>
+        </div>
+      </div>
+      <div class="project-card reveal reveal-delay-2">
+        <div class="project-num">03</div>
+        <div class="project-name">Automated Attendance System</div>
+        <p class="project-desc">
+          Digital attendance tracking platform built to eliminate manual processes. Reduces administrative overhead and provides real-time tracking for educational institutions.
+        </p>
+        <div class="project-tags">
+          <span class="tag">Python</span>
+          <span class="tag">Automation</span>
+          <span class="tag">Education</span>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="divider"></div>
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <div class="section-label reveal">Where I've Been</div>
+    <h2 class="section-title reveal reveal-delay-1">EXPERIENCE</h2>
+    <div class="exp-grid">
+      <div class="exp-item reveal">
+        <div class="exp-left">
+          <div class="exp-year">2025 – Present</div>
+          <div class="exp-company">E-Cell, IIT Bombay</div>
+        </div>
+        <div class="exp-right">
+          <div class="exp-title">Campus Ambassador</div>
+          <p class="exp-detail">Completed the prestigious Campus Ambassador Program with the Entrepreneurship Cell, IIT Bombay. Promoted entrepreneurship culture, represented IIT Bombay's E-Cell, and contributed to digital outreach campaigns. Recognized for contributions via Upstox CA Program.</p>
+        </div>
+      </div>
+      <div class="exp-item reveal">
+        <div class="exp-left">
+          <div class="exp-year">2025</div>
+          <div class="exp-company">D&B Next Gen Learning</div>
+        </div>
+        <div class="exp-right">
+          <div class="exp-title">Finance Management Launchpad</div>
+          <p class="exp-detail">Completed a 3-month project in Finance Management & Accounting (Edge³ program) through D&B Next Gen Learning Pvt Ltd. Gained practical exposure to financial analysis, accounting fundamentals, and real-world business tools with emphasis on experiential learning.</p>
+        </div>
+      </div>
+      <div class="exp-item reveal">
+        <div class="exp-left">
+          <div class="exp-year">2025</div>
+          <div class="exp-company">IIC · I²IT Pune</div>
+        </div>
+        <div class="exp-right">
+          <div class="exp-title">Finance & Auditing Head</div>
+          <p class="exp-detail">Led financial operations and auditing processes for the Institution Innovation Council at I²IT Pune. Managed budgets, tracked expenditure, and ensured compliance across all council activities and innovation initiatives.</p>
+        </div>
+      </div>
+      <div class="exp-item reveal">
+        <div class="exp-left">
+          <div class="exp-year">2024 – 2025</div>
+          <div class="exp-company">Startup Mahakumbh</div>
+        </div>
+        <div class="exp-right">
+          <div class="exp-title">Futurepreneurs Challenge Participant</div>
+          <p class="exp-detail">Represented I²IT Pune at the Startup Mahakumbh – Futurepreneurs Challenge (April 3–5, 2025) at Bharat Mandapam, New Delhi. Pitched Finofy to TiE Bangalore leadership and national startup ecosystem judges.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="divider"></div>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="section-label reveal">What I Know</div>
+    <h2 class="section-title reveal reveal-delay-1">SKILLS</h2>
+    <div class="skills-layout">
+      <div class="skill-group reveal">
+        <div class="skill-group-title">Technical</div>
+        <div class="skill-item"><span class="skill-dot"></span>Python</div>
+        <div class="skill-item"><span class="skill-dot"></span>Java</div>
+        <div class="skill-item"><span class="skill-dot"></span>C++</div>
+        <div class="skill-item"><span class="skill-dot"></span>Machine Learning</div>
+        <div class="skill-item"><span class="skill-dot"></span>AR / VR Development</div>
+        <div class="skill-item"><span class="skill-dot"></span>Blockchain</div>
+        <div class="skill-item"><span class="skill-dot"></span>Quantum Computing</div>
+      </div>
+      <div class="skill-group reveal reveal-delay-1">
+        <div class="skill-group-title">Finance & Business</div>
+        <div class="skill-item"><span class="skill-dot"></span>Financial Analysis</div>
+        <div class="skill-item"><span class="skill-dot"></span>Accounting Fundamentals</div>
+        <div class="skill-item"><span class="skill-dot"></span>Market Research</div>
+        <div class="skill-item"><span class="skill-dot"></span>Business Strategy</div>
+        <div class="skill-item"><span class="skill-dot"></span>Pitch Deck Creation</div>
+        <div class="skill-item"><span class="skill-dot"></span>Digital Marketing</div>
+        <div class="skill-item"><span class="skill-dot"></span>Business Analytics</div>
+      </div>
+      <div class="skill-group reveal reveal-delay-2">
+        <div class="skill-group-title">Tools & Soft Skills</div>
+        <div class="skill-item"><span class="skill-dot"></span>MS Excel</div>
+        <div class="skill-item"><span class="skill-dot"></span>PowerPoint</div>
+        <div class="skill-item"><span class="skill-dot"></span>Canva</div>
+        <div class="skill-item"><span class="skill-dot"></span>VS Code</div>
+        <div class="skill-item"><span class="skill-dot"></span>Leadership</div>
+        <div class="skill-item"><span class="skill-dot"></span>Communication</div>
+        <div class="skill-item"><span class="skill-dot"></span>Team Collaboration</div>
+      </div>
+    </div>
+  </section>
+  <div class="divider"></div>
+
+  <!-- CERTIFICATIONS -->
+  <section id="certifications">
+    <div class="section-label reveal">Recognition</div>
+    <h2 class="section-title reveal reveal-delay-1">CERTIFICATES</h2>
+    <div class="cert-list">
+      <div class="cert-item reveal">
+        <div class="cert-arrow">→</div>
+        <div class="cert-name">AR/VR Acceleration Bootcamp</div>
+        <div class="cert-org">C-DAC Pune × I²IT · Jan 2025</div>
+      </div>
+      <div class="cert-item reveal">
+        <div class="cert-arrow">→</div>
+        <div class="cert-name">Transformers & Language Models Workshop</div>
+        <div class="cert-org">I²IT Pune · Sep 2025</div>
+      </div>
+      <div class="cert-item reveal">
+        <div class="cert-arrow">→</div>
+        <div class="cert-name">Quantum Computing Workshop</div>
+        <div class="cert-org">IBM SkillsBuild · Mar 2025</div>
+      </div>
+      <div class="cert-item reveal">
+        <div class="cert-arrow">→</div>
+        <div class="cert-name">Digital Marketing Workshop</div>
+        <div class="cert-org">Techfest, IIT Bombay · Dec 2024</div>
+      </div>
+      <div class="cert-item reveal">
+        <div class="cert-arrow">→</div>
+        <div class="cert-name">Artificial Intelligence Workshop</div>
+        <div class="cert-org">IIT Bombay</div>
+      </div>
+      <div class="cert-item reveal">
+        <div class="cert-arrow">→</div>
+        <div class="cert-name">Business Analytics Workshop</div>
+        <div class="cert-org">IIT Bombay</div>
+      </div>
+      <div class="cert-item reveal">
+        <div class="cert-arrow">→</div>
+        <div class="cert-name">Finance Management & Accounting — Launchpad (3 months)</div>
+        <div class="cert-org">D&B Next Gen Learning Pvt Ltd</div>
+      </div>
+      <div class="cert-item reveal">
+        <div class="cert-arrow">→</div>
+        <div class="cert-name">Entrepreneurship Challenge Competition 2025 — Participation</div>
+        <div class="cert-org">I²IT Pune · Feb 2025</div>
+      </div>
+      <div class="cert-item reveal">
+        <div class="cert-arrow">→</div>
+        <div class="cert-name">Startup Mahakumbh Futurepreneurs Challenge</div>
+        <div class="cert-org">TiE Bangalore · Apr 2025</div>
+      </div>
+      <div class="cert-item reveal">
+        <div class="cert-arrow">→</div>
+        <div class="cert-name">Campus Ambassador Program</div>
+        <div class="cert-org">E-Cell, IIT Bombay × Upstox</div>
+      </div>
+      <div class="cert-item reveal">
+        <div class="cert-arrow">→</div>
+        <div class="cert-name">Java Add-on Certification · Machine Learning · Blockchain</div>
+        <div class="cert-org">I²IT Pune</div>
+      </div>
+    </div>
+  </section>
+  <div class="divider"></div>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="contact-bg">CONNECT</div>
+    <div class="contact-inner">
+      <div class="section-label reveal">Let's Talk</div>
+      <h2 class="section-title reveal reveal-delay-1">GET IN<br>TOUCH</h2>
+      <p class="reveal reveal-delay-2" style="color:var(--muted); max-width:480px; margin:0 auto 16px; line-height:1.8; font-weight:300;">
+        I'm open to internship opportunities in finance, consulting, strategy, and tech. Let's build something meaningful together.
+      </p>
+      <a href="mailto:ostwalprince2005@gmail.com" class="contact-email reveal reveal-delay-3">
+        ostwalprince2005@gmail.com
+      </a>
+      <div class="social-links reveal">
+        <a href="https://www.linkedin.com/in/prince-ostwal-a53321281" target="_blank" class="social-link">LinkedIn</a>
+        <a href="tel:+916375105767" class="social-link">+91 6375105767</a>
+        <a href="mailto:ostwalprince2005@gmail.com" class="social-link">Email</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-name">PRINCE OSTWAL</div>
+    <div class="footer-copy">© 2025 — Engineer · Entrepreneur · Leader</div>
+  </footer>
+
+  <script>
+    // CURSOR
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursorRing');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cursor.style.left = mx + 'px'; cursor.style.top = my + 'px'; });
+    function animRing() {
+      rx += (mx - rx) * 0.12;
+      ry += (my - ry) * 0.12;
+      ring.style.left = rx + 'px';
+      ring.style.top = ry + 'px';
+      requestAnimationFrame(animRing);
+    }
+    animRing();
+
+    // REVEAL ON SCROLL
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => observer.observe(el));
+
+    // Hero elements visible immediately
+    document.querySelectorAll('#hero .reveal').forEach(el => el.classList.add('visible'));
+  </script>
+</body>
+</html>
